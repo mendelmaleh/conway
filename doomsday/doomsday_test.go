@@ -1,23 +1,20 @@
-package conway_test
+package doomsday_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/mendelmaleh/conway"
+	"github.com/mendelmaleh/conway/doomsday"
+	"github.com/mendelmaleh/conway/utils"
 )
 
-func date(y int, m time.Month, d int) time.Time {
-	return time.Date(y, m, d, 0, 0, 0, 0, time.UTC)
+var date = utils.Date
+
+func datefmt(t time.Time) string {
+	return t.Format(utils.ISO8601)
 }
 
-func iso8061(t time.Time) string {
-	return t.Format(ISO8601)
-}
-
-const ISO8601 = "2006-01-02"
-
-func TestDoomsdayYear(t *testing.T) {
+func TestYear(t *testing.T) {
 	tests := []struct {
 		year int
 		want time.Weekday
@@ -31,14 +28,14 @@ func TestDoomsdayYear(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			if res := conway.DoomsdayYear(tc.year); res != tc.want {
+			if res := doomsday.Year(tc.year); res != tc.want {
 				t.Errorf("DoomsdayYear() = %v, want %v", res, tc.want)
 			}
 		})
 	}
 }
 
-func TestDoomsdayMonth(t *testing.T) {
+func TestMonth(t *testing.T) {
 	tests := []struct {
 		t    time.Time
 		want time.Time
@@ -77,8 +74,8 @@ func TestDoomsdayMonth(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			if res := conway.DoomsdayMonth(tc.t); res != tc.want {
-				t.Errorf("DoomsdayMonth() = %v, want %v", iso8061(res), iso8061(tc.want))
+			if res := doomsday.Month(tc.t); res != tc.want {
+				t.Errorf("DoomsdayMonth() = %v, want %v", datefmt(res), datefmt(tc.want))
 			}
 		})
 	}
@@ -103,7 +100,7 @@ func TestDoomsday(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			if res := conway.Doomsday(tc.date); res != tc.want {
+			if res := doomsday.Doomsday(tc.date); res != tc.want {
 				t.Errorf("Doomsday() = %v, want %v", res, tc.want)
 			}
 		})
