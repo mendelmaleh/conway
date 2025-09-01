@@ -14,6 +14,8 @@ func TestHeSheIt(t *testing.T) {
 		it   int
 		name string // description of this test case
 	}{
+		{1999, 49, 60, 20, "1999"},
+		{2000, 68, 50, 39, "2000"},
 		{2016, 71, 53, 42, "paper example 2016"},
 		{2017, 59, 70, 30, "paper example 2017"},
 		{2018, 48, 59, 19, "paper example 2018"},

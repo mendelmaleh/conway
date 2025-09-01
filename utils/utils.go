@@ -16,5 +16,5 @@ func Date(y int, m time.Month, d int) time.Time {
 
 // Leap checks if the year is leap
 func Leap(year int) bool {
-	return year%4 == 0 && year%400 != 0
+	return year%4 == 0 && (year%100 != 0 || year%400 == 0)
 }

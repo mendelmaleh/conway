@@ -42,8 +42,8 @@ func TestMonth(t *testing.T) {
 		name string // description of this test case
 	}{
 		{
-			date(2000, time.January, 22),
-			date(2000, time.January, 31),
+			date(2001, time.January, 22),
+			date(2001, time.January, 31),
 			"January non leap",
 		},
 		{

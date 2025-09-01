@@ -14,6 +14,7 @@ func TestNewYear(t *testing.T) {
 		want time.Time
 		name string // description of this test case
 	}{
+		{1999, utils.Date(1999, time.September, 11), "1999"},
 		{2016, utils.Date(2016, time.October, 3), "2016"},
 		{2017, utils.Date(2017, time.September, 21), "2017"},
 		{2018, utils.Date(2018, time.September, 10), "2018"},

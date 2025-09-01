@@ -6,6 +6,7 @@ import (
 	"github.com/mendelmaleh/conway/utils"
 )
 
+// HeSheIt from roman year
 func HeSheIt(year int) (int, int, int) {
 	// if rosh hashanah falls on the nth day of september, then IT = n + 9
 	newyear := NewYear(year)
