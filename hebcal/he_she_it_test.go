@@ -2,8 +2,10 @@ package hebcal_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/mendelmaleh/conway/hebcal"
+	"github.com/mendelmaleh/conway/utils"
 )
 
 func TestHeSheIt(t *testing.T) {
@@ -32,6 +34,24 @@ func TestHeSheIt(t *testing.T) {
 			}
 			if she != tc.she {
 				t.Errorf("HeSheIt() = %v, want %v", she, tc.she)
+			}
+		})
+	}
+}
+
+func TestRomanHeight(t *testing.T) {
+	tests := []struct {
+		date time.Time
+		want int
+		name string // description of this test case
+	}{
+		{utils.Date(2019, time.April, 7), 11, "paper example"},
+		{utils.Date(2020, time.January, 1), 14, "13th month"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := hebcal.RomanHeight(tt.date); got != tt.want {
+				t.Errorf("RomanHeight() = %v, want %v", got, tt.want)
 			}
 		})
 	}

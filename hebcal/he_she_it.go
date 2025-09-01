@@ -30,6 +30,11 @@ func HeSheIt(year int) (int, int, int) {
 	return he, she, it
 }
 
-func Height(date time.Time) int {
-	return int(date.Month()) + date.Day()
+func RomanHeight(date time.Time) int {
+	switch date.Month() {
+	case time.January, time.February:
+		return int(date.Month()) + 12 + date.Day()
+	default:
+		return int(date.Month()) + date.Day()
+	}
 }
