@@ -44,15 +44,19 @@ func (month HebrewMonth) String() string {
 	return names[int(month)-1]
 }
 
-func (month HebrewMonth) Partner() time.Month {
+func (month HebrewMonth) Number() int {
 	switch m := int(month); {
 	// nissan to elul is march to august
 	case month <= Elul:
-		return time.Month(m + 2)
+		return m + 2
 	// tishrei to adar ii is august to february
 	default:
-		return time.Month((m % 12) + 1)
+		return m + 1
 	}
+}
+
+func (month HebrewMonth) Partner() time.Month {
+	return time.Month((month.Number()-1)%12 + 1)
 }
 
 type HebrewDate struct {
@@ -80,13 +84,8 @@ func (date *HebrewDate) Height() int {
 
 func (date *HebrewDate) Roman() time.Time {
 	height := date.Height()
+	number := date.Month.Number()
 	partner := date.Month.Partner()
-
-	value := int(partner)
-	// jan and feb are 13 and 14
-	if partner <= 2 {
-		value += 12
-	}
 
 	romanyear := date.Year - 3761
 	// source: github.com/bendory/conway-hebrew-calendar
@@ -94,5 +93,5 @@ func (date *HebrewDate) Roman() time.Time {
 		romanyear++
 	}
 
-	return utils.Date(romanyear, partner, height-value)
+	return utils.Date(romanyear, partner, height-number)
 }

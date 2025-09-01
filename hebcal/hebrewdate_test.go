@@ -29,7 +29,6 @@ func TestHebrewMonth_Partner(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.month.String(), func(t *testing.T) {
-			// TODO: construct the receiver type.
 			if got := tt.month.Partner(); got != tt.want {
 				t.Errorf("Partner() = %v, want %v", got, tt.want)
 			}
