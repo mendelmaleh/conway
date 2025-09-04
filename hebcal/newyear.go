@@ -7,6 +7,7 @@ import (
 	"github.com/mendelmaleh/conway/utils"
 )
 
+// NewYear calculates the roman date of rosh hashana
 func NewYear(year int) time.Time {
 	// find the roman year's place in the 19-year golden cycle
 	golden := (year % 19) + 1

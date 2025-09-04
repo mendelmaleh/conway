@@ -44,6 +44,7 @@ func (month HebrewMonth) String() string {
 	return names[int(month)-1]
 }
 
+// Number of roman partner month for hebrew month
 func (month HebrewMonth) Number() int {
 	switch m := int(month); {
 	// nissan to elul is march to august
@@ -55,6 +56,7 @@ func (month HebrewMonth) Number() int {
 	}
 }
 
+// Partner roman month for hebrew month
 func (month HebrewMonth) Partner() time.Month {
 	return time.Month((month.Number()-1)%12 + 1)
 }
@@ -65,6 +67,7 @@ type HebrewDate struct {
 	Day   int
 }
 
+// Height of hebrew date
 func (date *HebrewDate) Height() int {
 	romanyear := date.Year - 3760 // TODO: 3761?
 	he, _, _ := HeSheIt(romanyear - 1)
@@ -82,6 +85,7 @@ func (date *HebrewDate) Height() int {
 	}
 }
 
+// Roman conversion from hebrew date
 func (date *HebrewDate) Roman() time.Time {
 	height := date.Height()
 	number := date.Month.Number()

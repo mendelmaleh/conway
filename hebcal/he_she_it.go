@@ -30,6 +30,7 @@ func HeSheIt(year int) (int, int, int) {
 	return he, she, it
 }
 
+// RomanHeight returns the height of a roman date
 func RomanHeight(date time.Time) int {
 	switch date.Month() {
 	case time.January, time.February:
