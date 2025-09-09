@@ -31,11 +31,11 @@ func HeSheIt(year int) (int, int, int) {
 }
 
 // RomanHeight returns the height of a roman date
-func RomanHeight(date time.Time) int {
-	switch date.Month() {
+func RomanHeight(month time.Month, day int) int {
+	switch month {
 	case time.January, time.February:
-		return int(date.Month()) + 12 + date.Day()
+		return int(month) + 12 + day
 	default:
-		return int(date.Month()) + date.Day()
+		return int(month) + day
 	}
 }

@@ -50,7 +50,7 @@ func TestRomanHeight(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := hebcal.RomanHeight(tt.date); got != tt.want {
+			if got := hebcal.RomanHeight(tt.date.Month(), tt.date.Day()); got != tt.want {
 				t.Errorf("RomanHeight() = %v, want %v", got, tt.want)
 			}
 		})
