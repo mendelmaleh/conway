@@ -10,7 +10,7 @@ import (
 
 var date = utils.Date
 
-func datefmt(t time.Time) string {
+func fmtdate(t time.Time) string {
 	return t.Format(utils.ISO8601)
 }
 
@@ -75,7 +75,7 @@ func TestMonth(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			if res := doomsday.Month(tc.t); res != tc.want {
-				t.Errorf("DoomsdayMonth() = %v, want %v", datefmt(res), datefmt(tc.want))
+				t.Errorf("DoomsdayMonth() = %v, want %v", fmtdate(res), fmtdate(tc.want))
 			}
 		})
 	}
