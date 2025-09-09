@@ -67,22 +67,27 @@ type HebrewDate struct {
 	Day   int
 }
 
+// Height of hebrew month
+func (month HebrewMonth) Height(he, she, it int) int {
+	switch month {
+	case Tishrei, Cheshvan:
+		return he
+	case Kislev:
+		return max(he, she)
+	case Tevet, Shevat, AdarI, AdarII:
+		return she
+	default:
+		return it
+	}
+}
+
 // Height of hebrew date
 func (date *HebrewDate) Height() int {
 	romanyear := date.Year - 3760 // TODO: 3761?
 	he, _, _ := HeSheIt(romanyear - 1)
 	_, she, it := HeSheIt(romanyear)
 
-	switch date.Month {
-	case Tishrei, Cheshvan:
-		return date.Day + he
-	case Kislev:
-		return date.Day + max(he, she)
-	case Tevet, Shevat, AdarI, AdarII:
-		return date.Day + she
-	default:
-		return date.Day + it
-	}
+	return date.Month.Height(he, she, it) + date.Day
 }
 
 // Roman conversion from hebrew date
