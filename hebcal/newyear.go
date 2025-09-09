@@ -17,10 +17,15 @@ func NewYear(year int) time.Time {
 
 	y := float64(year - 1900)
 
+	// adjustment for calendar length difference (hebrew 6939.69 vs gregorian 6939.60 days)
+	// bc == 6 for 1900-2099
+	by := year/100 - 11
+	bc := float64(by/4*3 + max(by%4-1, 0))
+
 	// newyear = sep A+B: c-d-E
 	var a, b, c, d, e float64
-	a = 1.5 * finder          // acrobatic
-	b = 6 + float64(year%4)/4 // bissextile
+	a = 1.5 * finder           // acrobatic
+	b = bc + float64(year%4)/4 // bissextile
 	c = finder + 1
 	d = (2*y - 1) / 35
 	e = (finder + 1) / 760 // can be ignored for 1762-2168
