@@ -8,29 +8,30 @@ import (
 
 func FromRoman(date time.Time) HebrewDate {
 	y, m, d := date.Date()
-
 	year := y + 3760
+
 	before := date.Before(NewYear(y))
 	if !before {
 		year++
 	}
 
-	month := MonthPartner(m, before)
-	hesheit := month.Height(HeSheIt(y))
-	height := RomanHeight(m, d)
+	f := func(y int, m time.Month, d int, before bool) (HebrewMonth, int) {
+		month := MonthPartner(m, before)
+		day := RomanHeight(m, d) - month.Height(HeSheIt(y))
+		return month, day
+	}
 
-	// stretch height out if smaller than hesheit
-	for hesheit >= height {
+	month, day := f(y, m, d, before)
+
+	// stretch date to previous month if height is smaller than hesheit
+	for day < 1 {
 		m -= 1
 		d += MonthDays(y, m)
 
-		// new height, partner, hesheit
-		month = MonthPartner(m, before)
-		hesheit = month.Height(HeSheIt(y))
-		height = RomanHeight(m, d)
+		// new month and day
+		month, day = f(y, m, d, before)
 	}
 
-	day := height - hesheit
 	// TODO: extend into next month if day > month length
 
 	return HebrewDate{year, month, day}
