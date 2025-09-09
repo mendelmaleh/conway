@@ -97,6 +97,11 @@ func TestDoomsday(t *testing.T) {
 			time.Sunday,
 			"paper example (text)",
 		},
+		{
+			date(2027, 10, 1),
+			time.Friday,
+			"failure from 2027 newyear test (-2)",
+		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {

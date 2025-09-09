@@ -19,7 +19,7 @@ func Doomsday(date time.Time) time.Weekday {
 	// year doomsday
 	weekday := Year(date.Year())
 
-	return time.Weekday((int(weekday) + days) % 7)
+	return time.Weekday(utils.Mod(int(weekday)+days, 7))
 }
 
 // Month returns the date of the month's doomsday occurance
