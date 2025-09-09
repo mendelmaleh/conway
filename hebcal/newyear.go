@@ -25,21 +25,34 @@ func NewYear(year int) time.Time {
 	d = (2*y - 1) / 35
 	e = (finder + 1) / 760 // can be ignored for 1762-2168
 
-	day := a + b + (c-d)/18 + e
+	day := a + b + (c-d)/18 - e
 	// fmt.Println(golden, finder, y)
 	// fmt.Println(a, b, c, d, e)
 	// fmt.Println(day)
 
-	// truncate, don't round! per david.slusky@ku.edu via email (from bendory)
+	// truncate, don't round! per david.slusky@ku.edu via email -- github.com/bendory/conway-hebrew-calendar
 	date := utils.Date(year, time.September, int(day))
 
-	// postponements: wed and fri for yom kippur, sun for hoshana rabba
-	switch doomsday.Doomsday(date) {
+	// first postponement doesn't apply to our system
+	weekday := doomsday.Doomsday(date)
+	switch weekday {
+	// second postponement: wed and fri for yom kippur, sun for hoshana rabba
 	case time.Sunday, time.Wednesday, time.Friday:
 		return date.AddDate(0, 0, 1)
-	default:
-		return date
 	}
+
+	leap := Finder(year)
+	frac := day - float64(int(day))
+	switch {
+	// third postponement: avoid 356 day year by postponing start
+	case weekday == time.Tuesday && frac > 0.633 && leap != LeapNext:
+		return date.AddDate(0, 0, 2)
+	// fourth postponement: avoid 382 day year by postponing start
+	case weekday == time.Monday && frac > 0.898 && leap == LeapPrev:
+		return date.AddDate(0, 0, 1)
+	}
+
+	return date
 }
 
 type Leap int
