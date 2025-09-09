@@ -10,10 +10,10 @@ import (
 
 func TestHebrewMonth_Partner(t *testing.T) {
 	tests := []struct {
-		month hebcal.HebrewMonth
-		want  time.Month
+		hebrew hebcal.HebrewMonth
+		roman  time.Month
 	}{
-		{hebcal.Tishrei, time.August},
+		// {hebcal.Tishrei, time.August}, // after new year
 		{hebcal.Cheshvan, time.September},
 		{hebcal.Kislev, time.October},
 		{hebcal.Tevet, time.November},
@@ -25,12 +25,15 @@ func TestHebrewMonth_Partner(t *testing.T) {
 		{hebcal.Sivan, time.May},
 		{hebcal.Tamuz, time.June},
 		{hebcal.Av, time.July},
-		{hebcal.Elul, time.August},
+		{hebcal.Elul, time.August}, // before new year
 	}
 	for _, tt := range tests {
-		t.Run(tt.month.String(), func(t *testing.T) {
-			if got := tt.month.Partner(); got != tt.want {
-				t.Errorf("Partner() = %v, want %v", got, tt.want)
+		t.Run(tt.hebrew.String(), func(t *testing.T) {
+			if got := tt.hebrew.Partner(); got != tt.roman {
+				t.Errorf("Partner() = %v, want %v", got, tt.roman)
+			}
+			if got := hebcal.MonthPartner(tt.roman, true); got != tt.hebrew {
+				t.Errorf("MonthPartner() = %v, want %v", got, tt.hebrew)
 			}
 		})
 	}
@@ -56,9 +59,9 @@ func TestHebrewDate_Height(t *testing.T) {
 
 func TestHebrewDate_Roman(t *testing.T) {
 	tests := []struct {
-		date hebcal.HebrewDate
-		want time.Time
-		name string // description of this test case
+		hebrew hebcal.HebrewDate
+		roman  time.Time
+		name   string // description of this test case
 	}{
 		{
 			hebcal.HebrewDate{5760, hebcal.Tishrei, 1},
@@ -70,6 +73,10 @@ func TestHebrewDate_Roman(t *testing.T) {
 			"moshe",
 		},
 		{
+			hebcal.HebrewDate{5779, hebcal.Nissan, 2},
+			utils.Date(2019, time.April, 7), "paper example",
+		},
+		{
 			hebcal.HebrewDate{5779, hebcal.Iyar, 7},
 			utils.Date(2019, time.May, 12),
 			"paper example",
@@ -77,8 +84,11 @@ func TestHebrewDate_Roman(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.date.Roman(); got != tt.want {
-				t.Errorf("Roman() = %v, want %v", got, tt.want)
+			if got := tt.hebrew.Roman(); got != tt.roman {
+				t.Errorf("Roman() = %v, want %v", got, tt.roman)
+			}
+			if got := hebcal.FromRoman(tt.roman); got != tt.hebrew {
+				t.Errorf("FromRoman(%v) = %v, want %v", tt.roman.Format(utils.ISO8601), got, tt.hebrew)
 			}
 		})
 	}

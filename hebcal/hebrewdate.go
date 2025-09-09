@@ -22,6 +22,7 @@ const (
 	Shevat
 	AdarI
 	AdarII
+	// TODO: regular Adar?
 )
 
 func (month HebrewMonth) String() string {
