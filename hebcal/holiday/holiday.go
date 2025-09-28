@@ -86,6 +86,7 @@ func (e Event) Fill(year int, diaspora bool) []Event {
 	// shemini atzeret and shavuot can be extended
 	//
 	// sukkot isn't actually extended over shemini atzeret
+	// shemini atzeret second day is actually simchat torah
 	// pesach last days are major
 	// yom kippur is major but and isn't extended
 
@@ -93,7 +94,6 @@ func (e Event) Fill(year int, diaspora bool) []Event {
 	for i := 0; i < day.Length; i++ {
 		day := day
 		day.Date.Day += i
-		day.Name = fmt.Sprintf("%s %s", e.Name, utils.RomanNumeral(i+1))
 
 		if e == Sukkot && (i > 0 && !diaspora) || (i > 1 && diaspora) {
 			day.Type &= ^Major
@@ -101,6 +101,13 @@ func (e Event) Fill(year int, diaspora bool) []Event {
 
 		if e == Pesach && i > (day.Length-e.Length) && i < 6 {
 			day.Type &= ^Major
+		}
+
+		// don't number shemini atzeret, second day is simchat torah
+		if e != SheminiAtzeret {
+			day.Name = fmt.Sprintf("%s %s", e.Name, utils.RomanNumeral(i+1))
+		} else if i == 1 {
+			day.Name = "Simchat Torah"
 		}
 
 		// delay start to nightfall when following a major holiday or saturday
