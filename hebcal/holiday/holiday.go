@@ -92,6 +92,8 @@ func (e Event) Fill(year int, diaspora bool) []Event {
 	var days []Event
 	for i := 0; i < day.Length; i++ {
 		day := day
+		day.Date.Day += i
+		day.Name = fmt.Sprintf("%s %s", e.Name, utils.RomanNumeral(i+1))
 
 		if e == Sukkot && (i > 0 && !diaspora) || (i > 1 && diaspora) {
 			day.Type &= ^Major
@@ -101,14 +103,11 @@ func (e Event) Fill(year int, diaspora bool) []Event {
 			day.Type &= ^Major
 		}
 
-		// delay start to nightfall for major holidays following another major or saturday
-		if day.Type.Is(Major|Holiday) && (i > 0 && days[i-1].Type.Is(Major)) ||
-			day.Date.Roman().Weekday() == time.Sunday {
+		// delay start to nightfall when following a major holiday or saturday
+		if day.Start == Sunset && ((i > 0 && days[i-1].Type.Is(Major)) ||
+			day.Date.Roman().Weekday() == time.Sunday) {
 			day.Start = Nightfall
 		}
-
-		day.Date.Day += i
-		day.Name = fmt.Sprintf("%s %s", e.Name, utils.RomanNumeral(i+1))
 
 		days = append(days, day)
 	}
