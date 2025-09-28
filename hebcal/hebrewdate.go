@@ -93,6 +93,11 @@ func (date *HebrewDate) Height() int {
 
 // Roman conversion from hebrew date
 func (date *HebrewDate) Roman() time.Time {
+	// fix adar ii in non-leap year
+	if date.Month == AdarII && Finder(date.Year-3760) != LeapPrev {
+		date.Month = AdarI
+	}
+
 	height := date.Height()
 	number := date.Month.Number()
 	partner := date.Month.Partner()
