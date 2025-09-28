@@ -72,7 +72,7 @@ func (e Event) Fill(year int, diaspora bool) []Event {
 	}
 
 	// extend diaspora
-	if diaspora && (e == SheminiAtzeret || e == Pesach || e == Shavuot) {
+	if diaspora && (e == ShminiAtzeret || e == Pesach || e == Shavuot) {
 		day.Length += 1
 	}
 
@@ -83,10 +83,10 @@ func (e Event) Fill(year int, diaspora bool) []Event {
 	// rosh hashana is two major days everywhere
 	// sukkot and pesach are multiple days and can be extended
 	// chanuka is multiple days and isn't extended
-	// shemini atzeret and shavuot can be extended
+	// shmini atzeret and shavuot can be extended
 	//
 	// sukkot isn't actually extended over shemini atzeret
-	// shemini atzeret second day is actually simchat torah
+	// shmini atzeret second day is actually simchat torah
 	// pesach last days are major
 	// yom kippur is major but and isn't extended
 
@@ -103,8 +103,8 @@ func (e Event) Fill(year int, diaspora bool) []Event {
 			day.Type &= ^Major
 		}
 
-		// don't number shemini atzeret, second day is simchat torah
-		if e != SheminiAtzeret {
+		// don't number shmini atzeret, second day is simchat torah
+		if e != ShminiAtzeret {
 			day.Name = fmt.Sprintf("%s %s", e.Name, utils.RomanNumeral(i+1))
 		} else if i == 1 {
 			day.Name = "Simchat Torah"

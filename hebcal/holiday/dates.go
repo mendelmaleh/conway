@@ -34,8 +34,8 @@ var (
 		Type:   Major | Holiday,
 	}
 
-	SheminiAtzeret = Event{
-		Name: "Shemini Atzeret",
+	ShminiAtzeret = Event{
+		Name: "Shmini Atzeret",
 		Date: hebcal.HebrewDate{Month: hebcal.Tishrei, Day: 22},
 		Type: Major | Holiday,
 	}
@@ -119,7 +119,7 @@ var (
 		TzomGedalia,
 		YomKippur,
 		Sukkot,
-		SheminiAtzeret,
+		ShminiAtzeret,
 		// kislev, tevet, shevat
 		Chanukah,
 		TenthOfTevet,
