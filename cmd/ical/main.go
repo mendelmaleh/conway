@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -8,12 +9,16 @@ import (
 
 	"github.com/emersion/go-ical"
 	"github.com/google/uuid"
+	"github.com/mendelmaleh/conway/hebcal"
 	"github.com/mendelmaleh/conway/hebcal/holiday"
+	"github.com/mendelmaleh/conway/utils"
 )
 
 func main() {
-	year := 5786
-	diaspora := true
+	year := flag.Int("year", hebcal.FromRoman(time.Now()).Year, "hebrew year")
+	diaspora := flag.Bool("diaspora", false, "use diaspora holidays")
+	test := flag.Bool("test", false, "testing mode")
+	flag.Parse()
 
 	cal := ical.NewCalendar()
 	cal.Props.SetText(ical.PropProductID, "-//xyz Corp//NONSGML PDA Calendar Version 1.0//EN")
@@ -22,7 +27,17 @@ func main() {
 	cal.Props.SetText("X-APPLE-CALENDAR-COLOR", "#FFCC00") // yellow
 
 	for _, v := range holiday.All {
-		for _, d := range v.Fill(year, diaspora) {
+		for _, d := range v.Fill(*year, *diaspora) {
+			if *test {
+				fmt.Println(
+					d.Date.Roman().Format(utils.ISO8601+" Mon:"),
+					d.Name,
+					d.Type.Is(holiday.Major),
+					d.Start,
+				)
+				continue
+			}
+
 			e := ical.NewEvent()
 			id, err := uuid.NewRandom()
 			if err != nil {
