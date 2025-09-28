@@ -1,3 +1,5 @@
+//go:generate stringer -type=Leap
+
 package hebcal
 
 import (
