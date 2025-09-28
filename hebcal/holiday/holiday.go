@@ -1,10 +1,12 @@
-//go:generate stringer -type=EventType,EventStart
+//go:generate stringer -type=EventStart
 
 package holiday
 
 import (
 	"fmt"
+	"strings"
 	"time"
+	"unicode"
 
 	"github.com/mendelmaleh/conway/hebcal"
 	"github.com/mendelmaleh/conway/utils"
@@ -25,6 +27,30 @@ const (
 	Fast
 	Major
 )
+
+func (t EventType) String() string {
+	var b []string
+
+	if t.Is(Major) {
+		b = append(b, "major")
+	}
+
+	if t.Is(Holiday) {
+		b = append(b, "holiday")
+	}
+
+	if t.Is(Fast) {
+		b = append(b, "fast")
+	}
+
+	if len(b) == 0 {
+		return fmt.Sprintf("Unknown EventType(%d)", t)
+	}
+
+	r := []rune(strings.Join(b, " "))
+	r[0] = unicode.ToUpper(r[0])
+	return string(r)
+}
 
 func (t EventType) Is(flag EventType) bool {
 	return t&flag == flag
