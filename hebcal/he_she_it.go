@@ -30,6 +30,14 @@ func HeSheIt(year int) (int, int, int) {
 	return he, she, it
 }
 
+func HebrewHeSheIt(year int) (int, int, int) {
+	romanyear := year - 3760
+	he, _, _ := HeSheIt(romanyear - 1)
+	_, she, it := HeSheIt(romanyear)
+
+	return he, she, it
+}
+
 // RomanHeight returns the height of a roman date
 func RomanHeight(month time.Month, day int) int {
 	switch month {

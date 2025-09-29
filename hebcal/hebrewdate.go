@@ -84,11 +84,7 @@ func (month HebrewMonth) Height(he, she, it int) int {
 
 // Height of hebrew date
 func (date *HebrewDate) Height() int {
-	romanyear := date.Year - 3760 // TODO: 3761?
-	he, _, _ := HeSheIt(romanyear - 1)
-	_, she, it := HeSheIt(romanyear)
-
-	return date.Month.Height(he, she, it) + date.Day
+	return date.Month.Height(HebrewHeSheIt(date.Year)) + date.Day
 }
 
 // Roman conversion from hebrew date

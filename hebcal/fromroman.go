@@ -15,13 +15,13 @@ func FromRoman(date time.Time) HebrewDate {
 		year++
 	}
 
-	f := func(y int, m time.Month, d int, before bool) (HebrewMonth, int) {
+	f := func(year int, m time.Month, d int, before bool) (HebrewMonth, int) {
 		month := MonthPartner(m, before)
-		day := RomanHeight(m, d) - month.Height(HeSheIt(y))
+		day := RomanHeight(m, d) - month.Height(HebrewHeSheIt(year))
 		return month, day
 	}
 
-	month, day := f(y, m, d, before)
+	month, day := f(year, m, d, before)
 
 	// stretch date to previous month if height is smaller than hesheit
 	for day < 1 {
@@ -29,7 +29,7 @@ func FromRoman(date time.Time) HebrewDate {
 		d += MonthDays(y, m)
 
 		// new month and day
-		month, day = f(y, m, d, before)
+		month, day = f(year, m, d, before)
 	}
 
 	// TODO: extend into next month if day > month length
