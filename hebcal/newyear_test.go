@@ -1,11 +1,10 @@
-package hebcal_test
+package hebcal
 
 import (
 	"strconv"
 	"testing"
 	"time"
 
-	"github.com/mendelmaleh/conway/hebcal"
 	"github.com/mendelmaleh/conway/utils"
 )
 
@@ -48,20 +47,44 @@ func TestNewYear(t *testing.T) {
 	for _, tc := range tests {
 		// test new year calculation
 		t.Run(strconv.Itoa(tc.Year()), func(t *testing.T) {
-			if got := hebcal.NewYear(tc.Year()); got != tc {
+			if got := NewYear(tc.Year()); got != tc {
 				t.Errorf("NewYear() = %v, want %v", fmtdate(got), fmtdate(tc))
 			}
 		})
 
-		hebrew := hebcal.HebrewDate{tc.Year() + 3761, hebcal.Tishrei, 1}
+		hebrew := HebrewDate{tc.Year() + 3761, Tishrei, 1}
 		// test hebrew to roman conversion
 		if got := hebrew.Roman(); got != tc {
 			t.Errorf("(HebrewDate).Roman() = %v, want %v", got, hebrew)
 		}
 
 		// test roman to hebrew conversion
-		if got := hebcal.FromRoman(tc); got != hebrew {
+		if got := FromRoman(tc); got != hebrew {
 			t.Errorf("FromRoman() = %v, want %v", got, hebrew)
 		}
+	}
+}
+
+func Test_bc(t *testing.T) {
+	tests := []struct {
+		start, end int
+		want       int
+	}{
+		{1500, 1699, 3},
+		{1700, 1799, 4},
+		{1800, 1899, 5},
+		{1900, 2099, 6},
+		{2100, 2199, 7},
+		{2200, 2299, 8},
+		{2300, 2499, 9},
+	}
+	for _, tt := range tests {
+		t.Run(strconv.Itoa(tt.want), func(t *testing.T) {
+			for y := tt.start; y <= tt.end; y++ {
+				if got := bc(y); got != tt.want {
+					t.Errorf("bc() = %v, want %v", got, tt.want)
+				}
+			}
+		})
 	}
 }
