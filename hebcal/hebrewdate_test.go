@@ -86,6 +86,11 @@ func TestHebrewDate_Roman(t *testing.T) {
 			utils.Date(2025, time.December, 15),
 			"chanukah 5786",
 		},
+		{
+			hebcal.HebrewDate{5786, hebcal.Shevat, 15},
+			utils.Date(2026, time.February, 2),
+			"tu bishevat 5786",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

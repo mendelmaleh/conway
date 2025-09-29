@@ -25,7 +25,8 @@ func FromRoman(date time.Time) HebrewDate {
 
 	// stretch date to previous month if height is smaller than hesheit
 	for day < 1 {
-		m -= 1
+		// decrement month and rollover
+		m = ((m - 1 + 11) % 12) + 1
 		d += MonthDays(y, m)
 
 		// new month and day
